@@ -13,7 +13,7 @@ services:
     eatable-ui:
         image: nginx
         volumes:
-            - /opt/lockorder/eatable-ui/html:/usr/share/nginx/html:ro
+            - ./eatable-ui/html:/usr/share/nginx/html:ro
         ports:
             - 8080:80
         environment:
@@ -25,9 +25,9 @@ services:
     eatable-oms:
         build: eatable-oms
         volumes:
-            - /opt/lockorder/eatable-oms/config:/config
-            - /opt/lockorder/logs/:/logs
-            - /opt/lockorder/eatable-oms/files/menu:/files/menu
+            - ./eatable-oms/config:/config
+            - ./logs/:/logs
+            - ./eatable-oms/files/menu:/files/menu
         ports:
             - 6080:6080
         environment:
@@ -38,7 +38,7 @@ services:
     db-cassandra:
         image: cassandra
         volumes:
-            - /opt/lockorder/db-cassandra/:/var/lib/cassandra
+            - ./db-cassandra/:/var/lib/cassandra
         ports:
             - 7000:7000
         environment:
