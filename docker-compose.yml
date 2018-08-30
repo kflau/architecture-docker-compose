@@ -1,0 +1,50 @@
+version: '3'
+services:
+    reverse-proxy:
+        build: reverse-proxy
+        ports:
+            - 80:80
+        environment:
+            - NGINX_HOST=proxy01.lockorder.cc
+            - NGINX_PORT=80
+        networks:
+            - lockorder
+
+    eatable-ui:
+        image: nginx
+        volumes:
+            - /opt/lockorder/eatable-ui/html:/usr/share/nginx/html:ro
+        ports:
+            - 8080:80
+        environment:
+            - NGINX_HOST=ui01.lockorder.cc
+            - NGINX_PORT=80
+        networks:
+            - lockorder
+
+    eatable-oms:
+        build: eatable-oms
+        volumes:
+            - /opt/lockorder/eatable-oms/config:/config
+            - /opt/lockorder/logs/:/logs
+            - /opt/lockorder/eatable-oms/files/menu:/files/menu
+        ports:
+            - 6080:6080
+        environment:
+            - JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
+        networks:
+            - lockorder
+
+    db-cassandra:
+        image: cassandra
+        volumes:
+            - /opt/lockorder/db-cassandra/:/var/lib/cassandra
+        ports:
+            - 7000:7000
+        environment:
+            - CASSANDRA_BROADCAST_ADDRESS=db01.lockorder.cc
+        networks:
+            - lockorder
+
+networks:
+    lockorder:
