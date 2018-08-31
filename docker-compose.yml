@@ -35,16 +35,12 @@ services:
         networks:
             - lockorder
 
-    db-cassandra:
-        image: cassandra
+    db-postgres:
+        image: postgres
         volumes:
-            - ./db-cassandra/:/var/lib/cassandra
+            - /opt/lockorder/pgdata:/var/lib/postgresql/data
         ports:
-            - 7000:7000
-        environment:
-            - CASSANDRA_BROADCAST_ADDRESS=db01.lockorder.cc
-        networks:
-            - lockorder
+            - 5432:5432
 
 networks:
     lockorder:
